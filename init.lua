@@ -1024,6 +1024,16 @@ require('lazy').setup({
       }
     end,
   },
+  {
+    'MunifTanjim/prettier.nvim',
+    config = function()
+      require('prettier').setup {
+        -- Optional: Configure Prettier options here
+        -- e.g., printWidth = 80, tabWidth = 2, useTabs = false, etc.
+        -- These options are passed directly to the Prettier CLI.
+      }
+    end,
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1048,3 +1058,6 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
