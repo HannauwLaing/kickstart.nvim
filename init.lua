@@ -720,6 +720,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'jdtls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -1065,3 +1066,7 @@ require('lazy').setup({
 
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
+
+-- remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
