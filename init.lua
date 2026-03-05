@@ -218,6 +218,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 		vim.hl.on_yank()
 	end,
 })
+-- Create an autocmd for LaTeX files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "tex",
+	callback = function()
+		vim.api.nvim_set_hl(0, "Statement", { fg = "#fa62b7", bold = true })
+		vim.api.nvim_set_hl(0, "Function", { fg = "#3d8fff", bold = true })
+	end,
+})
+
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -729,8 +738,12 @@ require('lazy').setup({
 			require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
 			require('mason-lspconfig').setup {
-				ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+				ensure_installed = {
+					"texlab",
+				},
+				-- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
 				automatic_installation = false,
+				automatic_enable = true,
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
@@ -950,7 +963,7 @@ require('lazy').setup({
 	{ -- Highlight, edit, and navigate code
 		'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdate',
-		main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+		main = 'nvim-treesitter.config', -- Sets main module to use for opts
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 		opts = {
 			ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
