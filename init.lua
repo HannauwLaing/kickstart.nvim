@@ -87,6 +87,28 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+
+-- Helper funciton for pyright:
+local function get_python_path()
+	local cwd = vim.fn.getcwd()
+
+	local candidates = {
+		cwd .. "/.venv/bin/python",
+		cwd .. "/venv/bin/python",
+		cwd .. "/../.venv/bin/python",
+		cwd .. "/../venv/bin/python",
+	}
+
+	for _, path in ipairs(candidates) do
+		if vim.fn.executable(path) == 1 then
+			return path
+		end
+	end
+
+	return vim.fn.exepath("python3")
+end
+
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -509,35 +531,6 @@ require('lazy').setup({
 			'saghen/blink.cmp',
 		},
 		config = function()
-			-- Brief aside: **What is LSP?**
-			--
-			-- LSP is an initialism you've probably heard, but might not understand what it is.
-			--
-			-- LSP stands for Language Server Protocol. It's a protocol that helps editors
-			-- and language tooling communicate in a standardized fashion.
-			--
-			-- In general, you have a "server" which is some tool built to understand a particular
-			-- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-			-- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-			-- processes that communicate with some "client" - in this case, Neovim!
-			--
-			-- LSP provides Neovim with features like:
-			--  - Go to definition
-			--  - Find references
-			--  - Autocompletion
-			--  - Symbol Search
-			--  - and more!
-			--
-			-- Thus, Language Servers are external tools that must be installed separately from
-			-- Neovim. This is where `mason` and related plugins come into play.
-			--
-			-- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-			-- and elegantly composed help section, `:help lsp-vs-treesitter`
-
-			--  This function gets run when an LSP attaches to a particular buffer.
-			--    That is to say, every time a new file is opened that is associated with
-			--    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
-			--    function will be executed to configure the current buffer
 			vim.api.nvim_create_autocmd('LspAttach', {
 				group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
 				callback = function(event)
@@ -692,13 +685,6 @@ require('lazy').setup({
 				-- gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
-				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-				--
-				-- Some languages (like typescript) have entire language plugins that can be useful:
-				--    https://github.com/pmizio/typescript-tools.nvim
-				--
-				-- But for many setups, the LSP (`ts_ls`) will work just fine
-				-- ts_ls = {},
 				--
 				bashls = {},
 				lua_ls = {
@@ -715,7 +701,20 @@ require('lazy').setup({
 						},
 					},
 				},
+				hls = {
+					cmd = { "haskell-language-server-wrapper", "--lsp" },
+				},
+
+
 			}
+
+			servers.pyright = vim.tbl_deep_extend("force", servers.pyright or {}, {
+				settings = {
+					python = {
+						pythonPath = get_python_path(),
+					},
+				},
+			})
 
 			-- Ensure the servers and tools above are installed
 			--
@@ -740,6 +739,7 @@ require('lazy').setup({
 			require('mason-lspconfig').setup {
 				ensure_installed = {
 					"texlab",
+					"pyright",
 				},
 				-- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
 				automatic_installation = false,
