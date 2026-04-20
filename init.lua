@@ -1058,3 +1058,5 @@ vim.keymap.set('n', '<down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent
 
 vim.keymap.set('i', '<up>', "<C-o>gk", { silent = true })
 vim.keymap.set('i', '<down>', "<C-o>gj", { silent = true })
+
+vim.keymap.set('i', '<S-Del>', '<Del>', { noremap = true, silent = true })
