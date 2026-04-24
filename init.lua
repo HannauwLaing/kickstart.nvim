@@ -618,9 +618,9 @@ require('lazy').setup({
 						},
 					},
 				},
-				hls = {
-					cmd = { "haskell-language-server-wrapper", "--lsp" },
-				},
+				-- hls = {
+				-- 	cmd = { "haskell-language-server-wrapper", "--lsp" },
+				-- },
 
 
 			}
