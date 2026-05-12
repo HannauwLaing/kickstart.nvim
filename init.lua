@@ -810,7 +810,20 @@ require('lazy').setup({
 	},
 
 	-- Highlight todo, notes, etc in comments
-	{ 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+	{
+		'folke/todo-comments.nvim',
+		event = 'VimEnter',
+		dependencies = { 'nvim-lua/plenary.nvim' },
+		opts = { signs = false },
+		keywords = {
+			FIX = { icon = " ", color = "error", alt = { "FIXME", "BUG", "FIXIT", "ISSUE" } },
+			TODO = { icon = " ", color = "info" },
+			HACK = { icon = " ", color = "warning" },
+			WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+			PERF = { icon = " ", color = "default", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+			NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+		},
+	},
 
 	{ -- Collection of various small independent plugins/modules
 		'echasnovski/mini.nvim',
