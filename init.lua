@@ -30,7 +30,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -892,9 +892,31 @@ require('lazy').setup({
 	-- require 'kickstart.plugins.indent_line',
 	-- require 'kickstart.plugins.lint',
 	-- require 'kickstart.plugins.autopairs',
-	-- require 'kickstart.plugins.neo-tree',
 	-- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
+	require 'kickstart.plugins.neo-tree',
+	{
+		'nvim-neo-tree/neo-tree.nvim',
+		branch = 'v3.x',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'MunifTanjim/nui.nvim',
+			'nvim-tree/nvim-web-devicons',
+		},
+		lazy = false,
+		opts = {
+			filesystem = {
+				follow_current_file = {
+					enabled = true,
+				},
+				use_libuv_file_watcher = true,
+			},
+		},
+		keys = {
+			{ '<leader>e', '<cmd>Neotree toggle<CR>', desc = 'Toggle file explorer' },
+			{ '<leader>E', '<cmd>Neotree reveal<CR>', desc = 'Reveal current file in explorer' },
+		},
+	},
 	{
 		'AckslD/nvim-neoclip.lua',
 		dependencies = {
