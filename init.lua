@@ -621,6 +621,22 @@ require('lazy').setup({
 				-- hls = {
 				-- 	cmd = { "haskell-language-server-wrapper", "--lsp" },
 				-- },
+				rust_analyzer = {
+					settings = {
+						["rust-analyzer"] = {
+							inlayHints = {
+								bindingModeHints = { enable = true },
+								chainingHints = { enable = true },
+								closingBraceHints = { enable = true },
+								closureReturnTypeHints = { enable = "always" },
+								lifetimeElisionHints = { enable = "always" },
+								parameterHints = { enable = true },
+								reborrowHints = { enable = "always" },
+								typeHints = { enable = true },
+							},
+						},
+					},
+				},
 
 
 			}
@@ -910,11 +926,33 @@ require('lazy').setup({
 					enabled = true,
 				},
 				use_libuv_file_watcher = true,
+				filtered_items = {
+					visible = true,
+					hide_dotfiles = false,
+					hide_gitignored = false,
+				},
+			},
+			close_if_last_window = true,
+			popup_border_style = 'rounded',
+			window = {
+				position = 'left',
+				width = 32,
+				mappings = {
+					['<space>'] = 'none',
+					['l'] = 'open',
+					['h'] = 'close_node',
+					['P'] = { 'toggle_preview', config = { use_float = true } },
+				},
+			},
+			git_status = {
+				window = {
+					position = 'float',
+				},
 			},
 		},
 		keys = {
 			{ '<leader>e', '<cmd>Neotree toggle<CR>', desc = 'Toggle file explorer' },
-			{ '<leader>E', '<cmd>Neotree reveal<CR>', desc = 'Reveal current file in explorer' },
+			-- { '<leader>E', '<cmd>Neotree reveal<CR>', desc = 'Reveal current file in explorer' },
 		},
 	},
 	{
@@ -1007,6 +1045,10 @@ require('lazy').setup({
 
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99
 
 -- remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
